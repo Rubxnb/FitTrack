@@ -1,0 +1,167 @@
+<template>
+  <v-container>
+    <v-row v-if="routine">
+      <v-card
+        class="mx-auto"
+        :style="{width:'400px'}"
+      >
+        <v-toolbar color="secondary">
+          <v-toolbar-title>{{ formatDate(selectedDate) }}</v-toolbar-title>
+          <v-spacer></v-spacer>
+          <v-btn
+            variant="text"
+            icon="mdi-plus"
+            @click="openForm(null)"
+          />
+        </v-toolbar>
+        <v-list lines="two">
+          <v-list-item
+            v-for="r in routine"
+            :key="r.id"
+            :title="r.Exercise.Name"
+            :subtitle="`${r.weight} kg - ${r.series} x ${r.repetitions}`"
+            :style="{
+              borderRadius: '5px'}"
+          >
+            <template v-slot:prepend>
+              <v-avatar>
+                <v-img
+                  :src="getMuscleIcon(r.Exercise.MuscleID)"
+                  alt="John"
+                />
+              </v-avatar>
+            </template>
+
+            <template
+              v-slot:append
+            >
+              <div>
+                <v-btn
+                  color="green"
+                  icon="mdi-pencil"
+                  variant="text"
+                  @click="openForm(r)"
+                />
+                <v-btn
+                  color="red"
+                  icon="mdi-delete-empty"
+                  variant="text"
+                  @click="openDelete(r.id)"
+                />
+              </div>
+            </template>
+          </v-list-item>
+        </v-list>
+      </v-card>
+    </v-row>
+      <v-dialog
+        v-model="openFormDialog"
+        width="auto"
+      >
+        <RoutineForm
+        :routine="routineSelected"
+        :date="selectedDate"
+        @close="closeFormDialog"
+        @reloadRoutineList="reloadRoutineList"
+        />
+      </v-dialog>
+    <v-dialog
+      v-model="openDeleteRoutine"
+      width="auto"
+    >
+      <v-card
+        maxWidth="400">
+        <v-card-title
+          class="text-primary"
+          width="100%"
+          :style="{backgroundColor:'#E3F2FD'}"
+        >
+          <p>Eliminar ejercicio</p>
+        </v-card-title>
+        <v-card-text>
+          <p>¿Desea eliminar el ejercicio seleccionado?</p>
+        </v-card-text>
+        <div :style="{display: 'flex',
+          justifyContent: 'end '}">
+          <v-card-actions>
+            <div>
+              <v-btn
+              color="primary"
+              block
+              @click="deleteRoutine(this.deleteIDSelected)">
+                si
+              </v-btn>
+            </div>
+            <div>
+            <v-btn
+            color="primary"
+            block
+            @click="openDeleteRoutine = false">
+              no
+            </v-btn>
+            </div>
+          </v-card-actions>
+        </div>
+      </v-card>
+    </v-dialog>
+  </v-container>
+</template>
+
+<script>
+import { muscleIcons } from '../assets/muscleIcons.js';
+import RoutineForm from './RoutineForm.vue';
+import { deleteRoutine } from '@/services/supabase/crudRoutine';
+
+export default {
+  components: {
+    RoutineForm,
+  },
+  props: {
+      routine: Array,
+      selectedDate: Date,
+  },
+  data() {
+    return {
+      routineSelected: null,
+      openFormDialog: false,
+      openDeleteRoutine: false,
+      deleteIDSelected: null,
+    };
+  },
+  methods: {
+    formatDate(date) {
+      if (!date) {
+          date = new Date();
+      }
+      const fecha = new Date(date);
+      return `${fecha.getDate()}/${fecha.getMonth() + 1}/${fecha.getFullYear()}`;
+    },
+    getMuscleIcon(id) {
+        return muscleIcons[id];
+    },
+    openForm(value) {
+      this.routineSelected = value;
+      this.openFormDialog = true;
+    },
+    closeFormDialog() {
+      this.openFormDialog = false;
+    },
+    reloadRoutineList(date) {
+      this.$emit('selectRoutineDay',date);
+    },
+    openDelete(id) {
+      this.openDeleteRoutine = true;
+      this.deleteIDSelected = id;
+    },
+    async deleteRoutine(id){
+      await deleteRoutine(id);
+      this.reloadRoutineList(this.selectedDate);
+      this.openDeleteRoutine = false;
+    },
+  },
+};
+</script>
+
+<style>
+
+</style>
