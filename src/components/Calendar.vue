@@ -35,6 +35,7 @@ export default {
   components: {
     DatePicker
   },
+  emits: ["selectRoutineDay"],
   data() {
     return {
       selectedDate: new Date(),
@@ -60,7 +61,7 @@ export default {
     },
   },
   async created() {
-    this.$store.dispatch('muscles/getMuscles');W
+    this.$store.dispatch('muscles/getMuscles');
     await this.getRoutineDays();
   },
   watch: {
