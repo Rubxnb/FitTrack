@@ -2,6 +2,30 @@
 <template>
   <v-container class="container">
     <v-row>
+      <v-col>
+        <v-text-field
+          class="text-primary"
+          v-model="email"
+          type="text"
+          label="e-mail"
+          required
+        />
+        <v-text-field
+          class="text-primary"
+          v-model="password"
+          type="text"
+          label="password"
+          required
+        />
+        <v-btn
+          @click="loginUser">
+          Submit
+        </v-btn>
+
+        <h3 v-if="welcome">{{ welcome }}</h3>
+      </v-col>
+    </v-row>
+    <v-row>
       <v-col
       align="center"
       :style="{gap: '4rem !important'}">
@@ -21,6 +45,7 @@
 
 <script>
   import { selectRoutine } from '../services/supabase/select';
+  import { login } from '../services/supabase/userSession';
   import Calendar from '@/components/Calendar.vue';
   import RoutineList from '@/components/RoutineList.vue';
 
@@ -31,6 +56,9 @@
     },
     data() {
       return {
+        email: null,
+        password: null,
+        welcome: null,
         routine: [],
         selectedDate: new Date(),
       };
@@ -44,6 +72,13 @@
         this.selectedDate = selectedDay;
         this.routine = await selectRoutine(selectedDay);
       },
+      async loginUser() {
+      console.log('login');
+      const data = await login(this.email, this.password);
+      if(data) {
+        this.welcome = `WELCOME ${data.user.email}`;
+      }
+    },
     },
     async created() {
       await this.selectRoutineDay(new Date());
