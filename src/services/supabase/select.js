@@ -50,3 +50,15 @@ export const selectRoutine = async (date) => {
   }
   return data;
 };
+
+export const userSession = async (email='natta231098@gmail.com') => {
+  const { user, er } = await supabase
+    .from('User')
+    .select('*')
+    .eq('User.Email', email);
+  debugger;
+  if (er) {
+    throw new error (er.message);
+  }
+  return user;
+};

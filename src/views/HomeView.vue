@@ -44,7 +44,7 @@
 </template>
 
 <script>
-  import { selectRoutine } from '../services/supabase/select';
+  import { selectRoutine, userSession } from '../services/supabase/select';
   import { login } from '../services/supabase/userSession';
   import Calendar from '@/components/Calendar.vue';
   import RoutineList from '@/components/RoutineList.vue';
@@ -73,10 +73,11 @@
         this.routine = await selectRoutine(selectedDay);
       },
       async loginUser() {
-      console.log('login');
-      const data = await login(this.email, this.password);
-      if(data) {
-        this.welcome = `WELCOME ${data.user.email}`;
+      /* const data = await login(this.email, this.password); */
+      const user = await userSession();
+      debugger;
+      if(user) {
+        this.welcome = `WELCOME ${user.email}`;
       }
     },
     },
