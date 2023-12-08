@@ -14,14 +14,14 @@
   justify="center"
   :style="{width: '300px',
   marginTop: '2rem'}">
-    <v-select class="text-primary"
+    <!-- <v-select class="text-primary"
     :style="{width: '150px !important'}"
     label="Filtra por un músculo"
     :items="muscles"
     item-title="Name"
     item-value="MuscleID"
     v-model="selectedMuscle"
-    />
+    /> -->
   </v-row>
 </template>
 
