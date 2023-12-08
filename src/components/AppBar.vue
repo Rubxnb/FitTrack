@@ -3,7 +3,7 @@
     <v-app-bar-title>
       <div
       :style="{display:'flex', alignItems:'center', gap: '1rem'}">
-        <v-img src="../../public/fittrackicon.png" width="40px"/>
+        <v-img src="../../public/fittrackicon.png" width="30px"/>
         <h3 class="text-primary">FitTrack</h3>
       </div>
     </v-app-bar-title>

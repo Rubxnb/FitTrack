@@ -6,7 +6,10 @@
       <v-col
       align="center"
       :style="{gap: '4rem !important'}">
-        <h2 class="text-primary">¡Hola {{ session.Name }}! 💪</h2>
+        <h2 class="text-primary" 
+          :style="{margin: '1rem'}">
+          ¡Hola {{ session.Name }}! 💪
+        </h2>
       </v-col>
     </v-row>
     <v-row>
@@ -68,8 +71,8 @@ export default {
 </script>
 
 <style>
-  .container {
-    margin-top: 3rem;
+  .v-container {
+    margin: 0 !important;
   }
   .v-toolbar-title__placeholder {
     display: flex !important;
