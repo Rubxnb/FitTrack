@@ -1,12 +1,12 @@
 <!-- eslint-disable vue/no-export-in-script-setup -->
 <template>
+  <AppBar />
   <v-container class="container">
     <v-row >
       <v-col
       align="center"
       :style="{gap: '4rem !important'}">
         <h2 class="text-primary">¡Hola {{ session.Name }}! 💪</h2>
-        <v-btn @click="closeSession">Cerrar Sesión</v-btn>
       </v-col>
     </v-row>
     <v-row>
@@ -31,11 +31,13 @@
 import { selectRoutine } from '../services/supabase/select';
 import Calendar from '@/components/Calendar.vue';
 import RoutineList from '@/components/RoutineList.vue';
+import AppBar from '@/components/AppBar.vue';
 
 export default {
   components: {
     Calendar,
     RoutineList,
+    AppBar,
   },
   props: {
     session: Object,
@@ -57,9 +59,6 @@ export default {
 
       this.selectedDate = selectedDay;
       this.routine = await selectRoutine(selectedDay);
-    },
-    closeSession(){
-        this.$store.dispatch('session/closeSession');
     }
   },
   async created() {
@@ -71,5 +70,8 @@ export default {
 <style>
   .container {
     margin-top: 3rem;
+  }
+  .v-toolbar-title__placeholder {
+    display: flex !important;
   }
 </style>
