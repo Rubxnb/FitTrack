@@ -8,7 +8,7 @@
       :style="{gap: '4rem !important'}">
         <h2 class="text-primary" 
           :style="{margin: '1rem'}">
-          ¡Hola {{ session.Name }}! 💪
+          🎄¡Hola {{ session.Name }}! 💪🎅
         </h2>
       </v-col>
     </v-row>
