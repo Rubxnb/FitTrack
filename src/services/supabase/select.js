@@ -1,4 +1,5 @@
 import { supabase } from "./client";
+import store from '@/store';
 
 export const selectMuscles = async () => {
   const { data, error } = await supabase
@@ -25,10 +26,12 @@ export const selectExercises = async (MuscleID) => {
 };
 
 export const selectViewDateRutine = async () => {
+  const { UserID } = store.getters['session/session'];
   const { data, error } = await supabase
     .from('distinct_date_routine')
-    .select('*');
-
+    .select('*')
+    .eq('UserID', UserID);
+  
   if (error) {
     throw new error (error.message);
   }
@@ -39,26 +42,15 @@ export const selectViewDateRutine = async () => {
 export const selectRoutine = async (date) => {
   const fecha = new Date(date);
   const formattedDate = `${fecha.getFullYear()}-${fecha.getMonth() + 1}-${fecha.getDate()}`;
-
+  const { UserID } = store.getters['session/session'];
   const { data, error } = await supabase
     .from('Routine')
     .select('*, Exercise(Name, MuscleID)')
-    .eq('date', formattedDate);
+    .eq('date', formattedDate)
+    .eq('UserID', UserID);
 
   if (error) {
     throw new error (error.message);
   }
   return data;
-};
-
-export const userSession = async (email='natta231098@gmail.com') => {
-  const { user, er } = await supabase
-    .from('User')
-    .select('*')
-    .eq('User.Email', email);
-  debugger;
-  if (er) {
-    throw new error (er.message);
-  }
-  return user;
 };

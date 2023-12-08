@@ -1,5 +1,6 @@
-export const getSession = () => localStorage.getItem('session');
+export const getSession = () => JSON.parse(localStorage.getItem('session'));
 
-export const setSession = (session) =>  localStorage.setItem('session', session);
+export const setSession = (session) => {
+    localStorage.setItem('session', JSON.stringify(session))};
 
 
