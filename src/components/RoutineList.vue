@@ -8,6 +8,11 @@
         <v-toolbar color="secondary">
           <v-toolbar-title>{{ formatDate(selectedDate) }}</v-toolbar-title>
           <v-spacer></v-spacer>
+          <v-btn v-if="routine && routine.length > 0"
+            variant="text"
+            icon="mdi-content-copy  "
+            @click="openCopyRoutine()"
+          />
           <v-btn
             variant="text"
             icon="mdi-plus"
@@ -54,17 +59,17 @@
         </v-list>
       </v-card>
     </v-row>
-      <v-dialog
-        v-model="openFormDialog"
-        width="auto"
-      >
-        <RoutineForm
-        :routine="routineSelected"
-        :date="selectedDate"
-        @close="closeFormDialog"
-        @reloadRoutineList="reloadRoutineList"
-        />
-      </v-dialog>
+    <v-dialog
+      v-model="openFormDialog"
+      width="auto"
+    >
+      <RoutineForm
+      :routine="routineSelected"
+      :date="selectedDate"
+      @close="closeFormDialog"
+      @reloadRoutineList="reloadRoutineList"
+      />
+    </v-dialog>
     <v-dialog
       v-model="openDeleteRoutine"
       width="auto"
@@ -104,17 +109,28 @@
         </div>
       </v-card>
     </v-dialog>
+    <v-dialog
+      v-model="openCopyDialog"
+      width="auto">
+      <CopyRoutineDialog 
+        :date="selectedDate"
+        :routine="routine"
+        @close="closeCopyDialog"
+        @reloadRoutineList="reloadRoutineList"/>
+    </v-dialog>
   </v-container>
 </template>
 
 <script>
 import { muscleIcons } from '../assets/muscleIcons.js';
 import RoutineForm from './RoutineForm.vue';
+import CopyRoutineDialog from './CopyRoutineDialog.vue';
 import { deleteRoutine } from '@/services/supabase/crudRoutine';
 
 export default {
   components: {
     RoutineForm,
+    CopyRoutineDialog,
   },
   props: {
       routine: Array,
@@ -126,12 +142,13 @@ export default {
       openFormDialog: false,
       openDeleteRoutine: false,
       deleteIDSelected: null,
+      openCopyDialog: false,
     };
   },
   methods: {
     formatDate(date) {
       if (!date) {
-          date = new Date();
+        date = new Date();
       }
       const fecha = new Date(date);
       return `${fecha.getDate()}/${fecha.getMonth() + 1}/${fecha.getFullYear()}`;
@@ -158,6 +175,12 @@ export default {
       this.reloadRoutineList(this.selectedDate);
       this.openDeleteRoutine = false;
     },
+    openCopyRoutine() {
+      this.openCopyDialog = true;
+    },
+    closeCopyDialog() {
+      this.openCopyDialog = false;
+    }
   },
 };
 </script>

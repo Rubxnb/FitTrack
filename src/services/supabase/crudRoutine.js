@@ -31,3 +31,15 @@ export const updateRoutine = async (id, routine) => {
 
   return error;
 };
+
+export const copyRoutineList = async (routines, date) => {
+  routines.forEach((routine) => {
+    insertRoutine({
+      date: date,
+      ExerciseID: routine.ExerciseID,
+      weight: routine.weight,
+      series: routine.series,
+      repetitions: routine.repetitions
+    })
+  });
+};
