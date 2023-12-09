@@ -1,11 +1,10 @@
 <template>
   <v-card>
     <v-card-title
-      class="text-primary"
       width="100%"
-      :style="{backgroundColor:'#E3F2FD'}"
+      :style="{backgroundColor:'#7178df'}"
     >
-      <p>Insertar ejercicio</p>
+      <p :style="{color: 'white'}">Nuevo ejercicio</p>
     </v-card-title>
     <v-card-item>
       <v-form ref="form">

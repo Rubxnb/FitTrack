@@ -52,7 +52,7 @@ export default {
 
   .v-avatar {
     margin-right: 0.5rem;
-    background-color: #5CBBF6 !important;
+    background-color: #7178df !important;
     font-size: 20px;
     width: 50px !important;
     height: 50px !important;

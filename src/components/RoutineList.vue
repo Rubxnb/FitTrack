@@ -5,7 +5,7 @@
         class="mx-auto"
         :style="{width:'400px'}"
       >
-        <v-toolbar color="secondary">
+        <v-toolbar color="#7178df">
           <v-toolbar-title>{{ formatDate(selectedDate) }}</v-toolbar-title>
           <v-spacer></v-spacer>
           <v-btn v-if="routine && routine.length > 0"
@@ -79,7 +79,7 @@
         <v-card-title
           class="text-primary"
           width="100%"
-          :style="{backgroundColor:'#E3F2FD'}"
+          :style="{backgroundColor:'#7178df'}"
         >
           <p>Eliminar ejercicio</p>
         </v-card-title>

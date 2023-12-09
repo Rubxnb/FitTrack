@@ -1,11 +1,10 @@
 <template>
   <v-card>
     <v-card-title
-      class="text-primary"
       width="100%"
-      :style="{backgroundColor:'#E3F2FD'}"
+      :style="{backgroundColor:'#7178df'}"
     >
-      <p>Copiar Rutina</p>
+      <p :style="{color: 'white'}">Copiar Rutina</p>
     </v-card-title>
     <v-card-item>
       <v-col>
