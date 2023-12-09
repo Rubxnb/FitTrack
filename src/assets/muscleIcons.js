@@ -7,4 +7,5 @@ export const muscleIcons = {
     6: './MuscleIcons/legIconBlue.png',
     7: './MuscleIcons/legIconBlue.png',
     8: './MuscleIcons/legIconBlue.png',
+    9: './MuscleIcons/legIconBlue.png',
 };
