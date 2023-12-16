@@ -5,7 +5,7 @@ export const insertRoutine = async (routine) => {
   const { UserID } = store.getters['session/session'];
   const { error } = await supabase
   .from('Routine')
-  .insert({...routine, UserID: UserID});
+  .insert({...routine, UserID: UserID, CreationDate: new Date()});
 
   return error;
 };
@@ -17,7 +17,7 @@ export const deleteRoutine = async (id) => {
     .delete()
     .eq('id', id)
     .eq('UserID', UserID);
-    
+
     return error;
 };
 

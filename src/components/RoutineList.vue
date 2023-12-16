@@ -8,9 +8,9 @@
         <v-toolbar color="#7178df">
           <v-toolbar-title>{{ formatDate(selectedDate) }}</v-toolbar-title>
           <v-spacer></v-spacer>
-          <v-btn v-if="routine && routine.length > 0"
+          <v-btn v-if="routine && Object.values(routine).length > 0"
             variant="text"
-            icon="mdi-content-copy  "
+            icon="mdi-content-copy"
             @click="openCopyRoutine()"
           />
           <v-btn
@@ -19,44 +19,82 @@
             @click="openForm(null)"
           />
         </v-toolbar>
-        <v-list lines="two">
-          <v-list-item
-            v-for="r in routine"
-            :key="r.id"
-            :title="r.Exercise.Name"
-            :subtitle="`${r.weight} kg - ${r.series} x ${r.repetitions}`"
-            :style="{
-              borderRadius: '5px'}"
+        <v-expansion-panels
+          variant="accordion"
+        >
+          <v-expansion-panel
+            v-for="i in Object.keys(routine)"
+            :key="i"
           >
-            <template v-slot:prepend>
-              <v-avatar>
-                <v-img
-                  :src="getMuscleIcon(r.Exercise.MuscleID)"
-                  alt="John"
+            <v-expansion-panel-title
+              :style="{gap: '1rem', height: '60px'}">
+              <img class="title-img"
+                  :src="getMuscleIcon(routine[i][0].Exercise.MuscleID)"
+                  alt="Musle Icon"
                 />
-              </v-avatar>
-            </template>
+              <p
+                :style="{fontSize: '16px !important'}"
+                >
+                {{ routine[i][0].Exercise.Name }}
+              </p>
+            </v-expansion-panel-title>
 
-            <template
-              v-slot:append
-            >
-              <div>
-                <v-btn
-                  color="green"
-                  icon="mdi-pencil"
-                  variant="text"
-                  @click="openForm(r)"
-                />
-                <v-btn
-                  color="red"
-                  icon="mdi-delete-empty"
-                  variant="text"
-                  @click="openDelete(r.id)"
-                />
-              </div>
-            </template>
-          </v-list-item>
-        </v-list>
+            <v-expansion-panel-text
+              :style="{
+                paddingTop:'0px !important',
+                paddingBottom: '0px !important'}"
+              >
+              <v-list>
+                <v-list-item
+                  v-for="r in routine[i]"
+                  :key="r.id"
+                  :title="`${r.weight} kg - ${r.series} x ${r.repetitions}`"
+                  :style="{
+                    borderRadius: '5px',
+                    padding:'0',
+                    minHeight: 'unset'}"
+                >
+
+                  <template
+                    v-slot:append
+                  >
+                    <div>
+                      <v-btn
+                        color="red"
+                        icon="mdi-close"
+                        variant="text"
+                        @click="openDelete(r.id)"
+                      />
+                      <v-btn
+                        color="green"
+                        icon="mdi-pencil"
+                        variant="text"
+                        @click="openForm(r)"
+                      />
+                    </div>
+                  </template>
+                </v-list-item>
+                <v-list-item
+                  width="100%"
+                  :style="{
+                    width:'100% !important',
+                    borderRadius: '5px',
+                    padding:'0',
+                    minHeight: 'unset',
+                    display: 'flex',
+                    justifyContent:'center'}"
+                >
+                      <v-btn class="btn-add-set"
+                      color="#7178df"
+                      @click="addSet(routine[i])"
+                      :style="{width: '100%'}">
+                        Añadir set
+                      </v-btn>
+                </v-list-item>
+              </v-list>
+            </v-expansion-panel-text>
+          </v-expansion-panel>
+        </v-expansion-panels>
       </v-card>
     </v-row>
     <v-dialog
@@ -81,7 +119,7 @@
           width="100%"
           :style="{backgroundColor:'#7178df'}"
         >
-          <p>Eliminar ejercicio</p>
+          <p :style="{color: 'white'}">Eliminar ejercicio</p>
         </v-card-title>
         <v-card-text>
           <p>¿Desea eliminar el ejercicio seleccionado?</p>
@@ -112,7 +150,7 @@
     <v-dialog
       v-model="openCopyDialog"
       width="auto">
-      <CopyRoutineDialog 
+      <CopyRoutineDialog
         :date="selectedDate"
         :routine="routine"
         @close="closeCopyDialog"
@@ -133,7 +171,7 @@ export default {
     CopyRoutineDialog,
   },
   props: {
-      routine: Array,
+      routine: Object,
       selectedDate: Date,
   },
   data() {
@@ -180,11 +218,37 @@ export default {
     },
     closeCopyDialog() {
       this.openCopyDialog = false;
-    }
+    },
+    addSet(routine) {
+      const newSet = {
+        ...routine[0],
+        id: null,
+        repetitions: null,
+        series: null,
+        weight: null,
+      };
+      this.routineSelected = newSet;
+      this.openFormDialog = true;
+    },
   },
 };
 </script>
 
 <style>
+  .title-img {
+    width: 40px !important;
+  }
+  .v-expansion-panel-text__wrapper {
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+  }
 
+  .v-list-item__content {
+    width: 100% !important;
+  }
+
+  .btn-add-set {
+    width: '100%';
+    border: 3px solid #7178df;
+  }
 </style>

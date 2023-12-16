@@ -139,15 +139,17 @@
       },
       async submit() {
         if(await this.validate()) {
-          if(!this.routine) {
+          if(!this.routine || this.routine.id === null) {
+            debugger;
             await insertRoutine({
               date: this.date,
               ExerciseID: this.selectedExercise,
               weight: this.weight,
               series: this.serie,
-              repetitions: this.repetitions
+              repetitions: this.repetitions,
             });
           } else {
+            debugger;
             await updateRoutine(this.routine.id,{
               ExerciseID: this.selectedExercise,
               weight: this.weight,

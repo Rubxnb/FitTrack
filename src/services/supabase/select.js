@@ -1,5 +1,6 @@
 import { supabase } from "./client";
 import store from '@/store';
+import { routineModel } from "./utils";
 
 export const selectMuscles = async () => {
   const { data, error } = await supabase
@@ -31,7 +32,7 @@ export const selectViewDateRutine = async () => {
     .from('distinct_date_routine')
     .select('*')
     .eq('UserID', UserID);
-  
+
   if (error) {
     throw new error (error.message);
   }
@@ -42,15 +43,19 @@ export const selectViewDateRutine = async () => {
 export const selectRoutine = async (date) => {
   const fecha = new Date(date);
   const formattedDate = `${fecha.getFullYear()}-${fecha.getMonth() + 1}-${fecha.getDate()}`;
+
   const { UserID } = store.getters['session/session'];
+
   const { data, error } = await supabase
     .from('Routine')
     .select('*, Exercise(Name, MuscleID)')
     .eq('date', formattedDate)
-    .eq('UserID', UserID);
+    .eq('UserID', UserID)
+    .order('CreationDate');
 
   if (error) {
     throw new error (error.message);
   }
-  return data;
+
+  return routineModel(data);
 };

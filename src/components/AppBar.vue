@@ -7,24 +7,23 @@
         <h3 class="text-primary">FitTrack</h3>
       </div>
     </v-app-bar-title>
-
     <!-- MENU -->
     <v-menu>
       <template v-slot:activator="{ props }">
-        <v-avatar 
-        class="avatar" 
-        v-bind="props" 
-        icon="mdi-account"
+        <v-avatar
+        class="avatar"
+        v-bind="props"
+        :icon=" session.BetaTester ? 'mdi-crown' : 'mdi-account'"
         color="#000"
         size="x-large"/>
       </template>
       <v-list :style="{marginTop:'0.3rem',
         padding: '0'}">
-        <v-list-item 
-          
+        <v-list-item
+
           @click="logout">
           <div :style="{display:'flex', gap: '0.5rem'}">
-            <v-icon 
+            <v-icon
             class="text-primary"
             icon="mdi-export" />
             <v-list-item-title>Cerrar Sesión</v-list-item-title>
@@ -38,17 +37,24 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
+
 export default {
   methods: {
     logout(){
       this.$store.dispatch('session/closeSession');
     },
-  }
+  },
+  computed: {
+    ...mapGetters({
+        session: 'session/session',
+    }),
+  },
 }
 </script>
 
 <style scoped>
- 
+
 
   .v-avatar {
     margin-right: 0.5rem;

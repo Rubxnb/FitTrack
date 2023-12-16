@@ -6,7 +6,7 @@
       <v-col
       align="center"
       :style="{gap: '4rem !important'}">
-        <h2 class="text-primary" 
+        <h2 class="text-primary"
           :style="{margin: '1rem'}">
           🎄¡Hola {{ session.Name }}! 💪🎅
         </h2>
@@ -27,9 +27,12 @@
         :routine="routine"/>
       </v-col>
     </v-row>
+    <v-row :style="{position:'absolute', bottom: '1rem'}">
+      <p class="text-primary" @click="this.openChangelogDialog = true;">v.0.2.0</p>
+    </v-row>
   </v-container>
 </template>
-  
+
 <script>
 import { selectRoutine } from '../services/supabase/select';
 import Calendar from '@/components/Calendar.vue';
